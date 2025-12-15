@@ -1,0 +1,7 @@
+source_code = """
+def greet():
+    message = "hello world"
+    print(message)
+"""
+
+print(forge_code(source_code))
