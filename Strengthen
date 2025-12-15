@@ -1,0 +1,16 @@
+import ast
+
+class ImproveTransformer(ast.NodeTransformer):
+    def visit_BinOp(self, node):
+        self.generic_visit(node)
+        # Constant folding
+        if isinstance(node.left, ast.Constant) and isinstance(node.right, ast.Constant):
+            try:
+                value = eval(compile(ast.Expression(node), "", "eval"))
+                return ast.Constant(value=value)
+            except Exception:
+                pass
+        return node
+
+def transform(tree):
+    return ImproveTransformer().visit(tree)
