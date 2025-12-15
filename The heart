@@ -1,0 +1,14 @@
+import ast
+import reshape
+import improve
+import encrypt
+
+def forge_code(source: str) -> str:
+    tree = ast.parse(source)
+
+    tree = reshape.transform(tree)
+    tree = improve.transform(tree)
+    tree = encrypt.transform(tree)
+
+    ast.fix_missing_locations(tree)
+    return ast.unparse(tree)
