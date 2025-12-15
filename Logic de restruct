@@ -1,0 +1,12 @@
+import ast
+
+class ReshapeTransformer(ast.NodeTransformer):
+    def visit_FunctionDef(self, node):
+        # Example: enforce explicit returns
+        self.generic_visit(node)
+        if not any(isinstance(n, ast.Return) for n in node.body):
+            node.body.append(ast.Return(value=ast.Constant(None)))
+        return node
+
+def transform(tree):
+    return ReshapeTransformer().visit(tree)
