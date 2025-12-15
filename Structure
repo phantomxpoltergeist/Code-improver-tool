@@ -1,0 +1,6 @@
+forge/
+├── forge.py          # Orchestrator
+├── reshape.py        # Structural refactors
+├── improve.py        # Optimization & safety
+├── encrypt.py        # Obfuscation & encryption
+└── utils.py          # Shared helpers
