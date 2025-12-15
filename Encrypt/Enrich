@@ -1,0 +1,24 @@
+import ast
+import base64
+
+class EncryptTransformer(ast.NodeTransformer):
+    def visit_Constant(self, node):
+        if isinstance(node.value, str):
+            encoded = base64.b64encode(node.value.encode()).decode()
+            return ast.Call(
+                func=ast.Name(id="__decrypt", ctx=ast.Load()),
+                args=[ast.Constant(encoded)],
+                keywords=[]
+            )
+        return node
+
+def transform(tree):
+    tree.body.insert(0, _decrypt_function())
+    return EncryptTransformer().visit(tree)
+
+def _decrypt_function():
+    return ast.parse("""
+import base64
+def __decrypt(x):
+    return base64.b64decode(x).decode()
+""").body[0]
